@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DealCheck — Industrial Sales Coach</title>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Source+Sans+3:wght@300;400;500;600&family=Source+Serif+4:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+:root {
+  --bg:#f0ece4; --bg2:#e8e3d9; --bg3:#ddd8ce;
+  --surface:#faf8f4; --ink:#1a1a18; --ink2:#3d3d38; --ink3:#7a7a72; --ink4:#a8a89e;
+  --rule:#c8c3b8; --red:#b33a2a; --amber:#c47a1a; --green:#2a6640; --blue:#1e3d5c; --accent:#b33a2a;
+  --fh:'Oswald',sans-serif; --fb:'Source Sans 3',sans-serif; --fs:'Source Serif 4',serif;
+}
+body { background:var(--bg); color:var(--ink); font-family:var(--fb); min-height:100vh; }
+.screen { display:none; min-height:100vh; flex-direction:column; }
+.screen.active { display:flex; }
+
+.hdr { background:var(--blue); padding:14px 32px; display:flex; align-items:center; justify-content:space-between; border-bottom:3px solid var(--accent); flex-shrink:0; }
+.logo { font-family:var(--fh); font-size:22px; letter-spacing:3px; color:#fff; font-weight:700; }
+.logo span { color:#f0a070; }
+.hdr-tag { font-family:var(--fh); font-size:11px; letter-spacing:3px; color:rgba(255,255,255,0.45); text-transform:uppercase; }
+.hdr-btn { background:none; border:1px solid rgba(255,255,255,0.25); color:rgba(255,255,255,0.6); padding:8px 16px; font-family:var(--fh); font-size:12px; letter-spacing:2px; cursor:pointer; text-transform:uppercase; transition:all .15s; }
+.hdr-btn:hover { border-color:rgba(255,255,255,.6); color:#fff; }
+
+
+
+/* LANDING */
+#sl { align-items:center; justify-content:center; padding:48px 20px; }
+.li { max-width:540px; width:100%; }
+.eyebrow { font-family:var(--fh); font-size:11px; letter-spacing:5px; color:var(--ink3); text-transform:uppercase; margin-bottom:14px; display:flex; align-items:center; gap:12px; }
+.eyebrow::before { content:''; width:28px; height:2px; background:var(--accent); }
+.headline { font-family:var(--fh); font-size:52px; line-height:1.05; font-weight:700; letter-spacing:1px; margin-bottom:22px; }
+.headline em { color:var(--accent); font-style:normal; }
+.lbody { font-family:var(--fs); font-size:16px; color:var(--ink2); line-height:1.7; margin-bottom:36px; border-left:3px solid var(--rule); padding-left:18px; }
+.start-btn { background:var(--blue); color:#fff; border:none; padding:15px 38px; font-family:var(--fh); font-size:20px; letter-spacing:3px; cursor:pointer; transition:all .15s; }
+.start-btn:hover { background:var(--accent); transform:translateY(-1px); }
+.lnote { margin-top:16px; font-family:var(--fh); font-size:11px; letter-spacing:2px; color:var(--ink4); text-transform:uppercase; }
+.ldiv { width:100%; height:1px; background:var(--rule); margin:36px 0; }
+.wyg { display:flex; gap:28px; }
+.wyg-n { font-family:var(--fh); font-size:34px; color:var(--accent); line-height:1; margin-bottom:4px; }
+.wyg-l { font-size:13px; color:var(--ink3); line-height:1.4; }
+
+/* QUESTIONS */
+#sq .qwrap { flex:1; display:flex; align-items:center; justify-content:center; padding:48px 20px; }
+.qcard { max-width:560px; width:100%; }
+.qprow { display:flex; align-items:center; gap:14px; margin-bottom:32px; }
+.qptrack { flex:1; height:4px; background:var(--bg3); }
+.qpfill { height:100%; background:var(--blue); transition:width .4s ease; }
+.qptxt { font-family:var(--fh); font-size:12px; letter-spacing:2px; color:var(--ink4); white-space:nowrap; text-transform:uppercase; }
+.qsec { font-family:var(--fh); font-size:10px; letter-spacing:5px; color:var(--ink4); text-transform:uppercase; margin-bottom:8px; }
+.qtxt { font-family:var(--fh); font-size:27px; font-weight:500; color:var(--ink); line-height:1.3; margin-bottom:8px; letter-spacing:.3px; }
+.qhint { font-family:var(--fs); font-size:14px; color:var(--ink3); margin-bottom:22px; line-height:1.6; font-style:italic; }
+.qta { width:100%; background:var(--surface); border:1px solid var(--rule); border-bottom:2px solid var(--blue); color:var(--ink); padding:14px 16px; font-family:var(--fb); font-size:15px; outline:none; resize:none; min-height:88px; line-height:1.6; transition:border-color .2s; }
+.qta:focus { border-bottom-color:var(--accent); }
+.qta::placeholder { color:var(--ink4); }
+.qopts { display:flex; flex-direction:column; gap:7px; }
+.qopt { background:var(--surface); border:1px solid var(--rule); color:var(--ink2); padding:11px 16px; font-family:var(--fb); font-size:15px; cursor:pointer; transition:all .12s; text-align:left; display:flex; align-items:center; gap:12px; }
+.qopt::before { content:''; width:13px; height:13px; border:2px solid var(--rule); border-radius:50%; flex-shrink:0; transition:all .12s; }
+.qopt:hover { border-color:var(--blue); background:var(--bg2); }
+.qopt.sel { border-color:var(--blue); background:#e8eef5; color:var(--blue); font-weight:600; }
+.qopt.sel::before { background:var(--blue); border-color:var(--blue); }
+.other-in { width:100%; background:var(--surface); border:1px solid var(--blue); color:var(--ink); padding:10px 14px; font-family:var(--fb); font-size:14px; outline:none; margin-top:4px; display:none; }
+.other-in.vis { display:block; }
+.qnav { display:flex; gap:10px; margin-top:26px; align-items:center; }
+.btnp { background:var(--blue); color:#fff; border:none; padding:13px 28px; font-family:var(--fh); font-size:16px; letter-spacing:2px; cursor:pointer; transition:all .15s; text-transform:uppercase; }
+.btnp:hover { background:var(--accent); }
+.btns { background:transparent; border:1px solid var(--rule); color:var(--ink3); padding:13px 20px; font-family:var(--fh); font-size:13px; letter-spacing:2px; cursor:pointer; transition:all .15s; text-transform:uppercase; }
+.btns:hover { border-color:var(--ink3); color:var(--ink2); }
+.btnsk { margin-left:auto; background:none; border:none; color:var(--ink4); font-size:13px; cursor:pointer; font-family:var(--fh); letter-spacing:2px; text-transform:uppercase; }
+.btnsk:hover { color:var(--ink3); }
+
+/* PROCESSING */
+#sp { align-items:center; justify-content:center; }
+.procbox { max-width:400px; text-align:center; padding:40px; background:var(--surface); border:1px solid var(--rule); border-top:4px solid var(--blue); }
+.proctitle { font-family:var(--fh); font-size:22px; letter-spacing:3px; color:var(--blue); margin-bottom:8px; text-transform:uppercase; }
+.procsub { font-size:14px; color:var(--ink3); margin-bottom:28px; font-family:var(--fs); font-style:italic; }
+.procsteps { list-style:none; text-align:left; }
+.procsteps li { font-family:var(--fh); font-size:12px; letter-spacing:1px; color:var(--ink4); padding:8px 0; display:flex; align-items:center; gap:14px; border-bottom:1px solid var(--bg3); text-transform:uppercase; transition:color .3s; }
+.procsteps li:last-child { border-bottom:none; }
+.procsteps li.active { color:var(--blue); font-weight:600; }
+.procsteps li.done { color:var(--green); }
+.smark { width:16px; text-align:center; font-size:12px; }
+
+/* RESULTS */
+.rband { background:var(--blue); padding:18px 32px; display:flex; align-items:center; gap:20px; flex-wrap:wrap; flex-shrink:0; }
+.rdname { flex:1; font-family:var(--fh); font-size:20px; letter-spacing:1px; color:#fff; font-weight:500; }
+.rdmeta { font-size:13px; color:rgba(255,255,255,0.5); margin-top:2px; font-family:var(--fb); }
+.vbadge { padding:10px 22px; font-family:var(--fh); font-size:14px; letter-spacing:2px; text-transform:uppercase; border:2px solid; display:flex; flex-direction:column; align-items:center; gap:2px; }
+.vbadge.yellow { border-color:#e8b84a; color:#e8b84a; }
+.vbadge.red { border-color:#e87060; color:#e87060; }
+.vbadge.green { border-color:#70c890; color:#70c890; }
+.vscore { font-size:26px; line-height:1; }
+.vlabel { font-size:10px; letter-spacing:3px; opacity:.8; }
+.rbody { flex:1; display:grid; grid-template-columns:290px 1fr; overflow:hidden; }
+.rsidebar { background:var(--surface); border-right:1px solid var(--rule); padding:24px 20px; overflow-y:auto; }
+.sbhead { font-family:var(--fh); font-size:11px; letter-spacing:4px; text-transform:uppercase; color:var(--ink4); margin-bottom:10px; padding-bottom:7px; border-bottom:1px solid var(--rule); }
+.hitem { display:flex; align-items:flex-start; gap:10px; padding:9px 0; border-bottom:1px solid var(--bg3); cursor:pointer; transition:background .1s; }
+.hitem:last-child { border-bottom:none; }
+.hitem:hover { background:var(--bg2); margin:0 -6px; padding:9px 6px; }
+.hdot { width:10px; height:10px; border-radius:50%; margin-top:3px; flex-shrink:0; }
+.hdot.red { background:var(--red); } .hdot.amber { background:var(--amber); } .hdot.green { background:var(--green); }
+.hname { font-family:var(--fh); font-size:14px; letter-spacing:.3px; color:var(--ink); margin-bottom:1px; }
+.hstat { font-size:12px; color:var(--ink4); }
+.vbox { background:var(--bg2); border:1px solid var(--rule); border-left:4px solid var(--blue); padding:14px 16px; margin-top:20px; }
+.vboxlbl { font-family:var(--fh); font-size:10px; letter-spacing:3px; text-transform:uppercase; color:var(--ink4); margin-bottom:5px; }
+.vboxtxt { font-family:var(--fs); font-size:14px; color:var(--ink2); line-height:1.6; }
+.rmain { padding:26px 30px; overflow-y:auto; }
+.ptitle { font-family:var(--fh); font-size:26px; letter-spacing:2px; color:var(--ink); text-transform:uppercase; margin-bottom:6px; }
+.pinstr { font-family:var(--fs); font-size:14px; color:var(--ink3); font-style:italic; margin-bottom:22px; padding-bottom:18px; border-bottom:1px solid var(--rule); line-height:1.6; }
+
+/* AI LOADING SKELETON */
+.play-skeleton { border:1px solid var(--rule); background:var(--surface); margin-bottom:3px; padding:20px 18px; }
+.skel-line { height:12px; background:linear-gradient(90deg,var(--bg3) 25%,var(--bg2) 50%,var(--bg3) 75%); background-size:200% 100%; animation:shimmer 1.5s infinite; border-radius:2px; margin-bottom:10px; }
+.skel-line.short { width:40%; }
+.skel-line.med { width:65%; }
+.skel-line.full { width:100%; }
+@keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+
+/* PLAY CARDS */
+.pcard { border:1px solid var(--rule); background:var(--surface); margin-bottom:3px; overflow:hidden; animation:fadeUp .35s ease both; }
+.pcard:hover { border-color:#a0a899; }
+.pchdr { display:flex; align-items:stretch; cursor:pointer; }
+.pbar { width:5px; flex-shrink:0; }
+.pbar.aggressive { background:var(--red); }
+.pbar.moderate { background:var(--amber); }
+.pbar.passive { background:var(--green); }
+.pinnr { flex:1; padding:15px 18px; }
+.ptoprow { display:flex; align-items:center; gap:10px; margin-bottom:5px; flex-wrap:wrap; }
+.pmode { font-family:var(--fh); font-size:10px; letter-spacing:3px; text-transform:uppercase; padding:2px 10px; border:1px solid; flex-shrink:0; }
+.pmode.aggressive { border-color:var(--red); color:var(--red); }
+.pmode.moderate { border-color:var(--amber); color:var(--amber); }
+.pmode.passive { border-color:var(--green); color:var(--green); }
+.pchtag { font-family:var(--fh); font-size:10px; letter-spacing:1px; text-transform:uppercase; color:var(--ink4); }
+.ptiming { margin-left:auto; font-family:var(--fh); font-size:10px; letter-spacing:2px; color:var(--ink4); text-transform:uppercase; }
+.ptitletxt { font-family:var(--fh); font-size:17px; font-weight:500; color:var(--ink); letter-spacing:.2px; line-height:1.3; margin-bottom:5px; }
+.pbodytxt { font-size:14px; color:var(--ink3); line-height:1.6; }
+.pexpbtn { display:flex; align-items:center; padding:0 18px; color:var(--ink4); font-size:18px; flex-shrink:0; cursor:pointer; user-select:none; transition:color .15s; font-family:var(--fh); }
+.pexpbtn:hover { color:var(--blue); }
+.pexpanded { display:none; border-top:1px solid var(--bg3); padding:18px 18px 18px 23px; background:var(--bg2); }
+.pcard.open .pexpanded { display:block; }
+.psclbl { font-family:var(--fh); font-size:10px; letter-spacing:4px; text-transform:uppercase; color:var(--ink4); margin-bottom:9px; }
+.pscbox { background:var(--surface); border:1px solid var(--rule); border-left:3px solid var(--blue); padding:14px 16px; font-family:var(--fs); font-size:14px; color:var(--ink2); line-height:1.8; white-space:pre-line; margin-bottom:12px; }
+.pbtns { display:flex; gap:8px; flex-wrap:wrap; }
+.pbtn { padding:8px 18px; font-family:var(--fh); font-size:12px; letter-spacing:2px; text-transform:uppercase; cursor:pointer; transition:all .12s; border:1px solid var(--rule); background:var(--surface); color:var(--ink2); }
+.pbtn:hover { border-color:var(--blue); color:var(--blue); }
+.pbtn.pri { background:var(--blue); border-color:var(--blue); color:#fff; }
+.pbtn.pri:hover { background:var(--accent); border-color:var(--accent); }
+
+/* ERROR BOX */
+.err-box { background:#fff0ee; border:1px solid var(--red); border-left:4px solid var(--red); padding:16px 18px; margin-bottom:16px; font-family:var(--fs); font-size:14px; color:var(--red); line-height:1.6; }
+
+/* MODAL */
+.overlay { display:none; position:fixed; inset:0; background:rgba(26,26,24,.5); z-index:50; align-items:center; justify-content:center; padding:20px; }
+.overlay.open { display:flex; }
+.modal { background:var(--surface); border:1px solid var(--rule); border-top:4px solid var(--blue); max-width:490px; width:100%; padding:30px 26px; position:relative; }
+.mclose { position:absolute; top:14px; right:14px; background:none; border:1px solid var(--rule); color:var(--ink3); width:28px; height:28px; cursor:pointer; font-size:14px; display:flex; align-items:center; justify-content:center; }
+.mclose:hover { border-color:var(--red); color:var(--red); }
+.meyebrow { font-family:var(--fh); font-size:10px; letter-spacing:4px; text-transform:uppercase; color:var(--ink4); margin-bottom:5px; }
+.mtitle { font-family:var(--fh); font-size:22px; color:var(--ink); letter-spacing:1px; margin-bottom:5px; }
+.mstatus { display:inline-block; font-family:var(--fh); font-size:11px; letter-spacing:3px; text-transform:uppercase; padding:3px 12px; border:1px solid; margin-bottom:18px; }
+.mstatus.red { border-color:var(--red); color:var(--red); }
+.mstatus.amber { border-color:var(--amber); color:var(--amber); }
+.mstatus.green { border-color:var(--green); color:var(--green); }
+.mfinding { font-family:var(--fs); font-size:15px; color:var(--ink2); line-height:1.7; margin-bottom:18px; padding-left:14px; border-left:3px solid var(--rule); }
+.mwslbl { font-family:var(--fh); font-size:10px; letter-spacing:3px; text-transform:uppercase; color:var(--ink4); margin-bottom:6px; }
+.mws { background:var(--bg2); border:1px solid var(--rule); padding:12px 14px; font-size:14px; color:var(--ink2); line-height:1.6; }
+
+.toast { position:fixed; bottom:26px; left:50%; transform:translateX(-50%) translateY(70px); background:var(--blue); color:#fff; padding:11px 22px; font-family:var(--fh); font-size:13px; letter-spacing:2px; text-transform:uppercase; transition:transform .3s ease; z-index:999; border-top:2px solid var(--accent); }
+.toast.show { transform:translateX(-50%) translateY(0); }
+
+@keyframes fadeUp { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
+::-webkit-scrollbar{width:4px} ::-webkit-scrollbar-track{background:var(--bg2)} ::-webkit-scrollbar-thumb{background:var(--rule)}
+</style>
+</head>
+<body>
+
+<!-- LANDING -->
+<div class="screen active" id="sl">
+  <div class="hdr"><div class="logo">DEAL<span>CHECK</span></div><div class="hdr-tag">AI-Powered Industrial Sales Coach</div></div>
+
+  <div style="flex:1;display:flex;align-items:center;justify-content:center;padding:48px 20px;">
+    <div class="li">
+      <div class="eyebrow">For Reps Who Sell to Manufacturers</div>
+      <div class="headline">Is this deal<br><em>real</em> or just<br>wishful thinking?</div>
+      <div class="lbody">Answer 12 plain-English questions. Get a health check on what's solid and what's missing — then receive three AI-generated plays written specifically for your deal: aggressive, moderate, or passive.</div>
+      <button class="start-btn" onclick="startDeal()">INSPECT MY DEAL →</button>
+      <div class="lnote">Takes about 4 minutes · Powered by Claude AI</div>
+      <div class="ldiv"></div>
+      <div class="wyg">
+        <div><div class="wyg-n">12</div><div class="wyg-l">Diagnostic questions, no jargon</div></div>
+        <div><div class="wyg-n">7</div><div class="wyg-l">Deal health factors checked</div></div>
+        <div><div class="wyg-n">3</div><div class="wyg-l">AI plays — aggressive, moderate, passive</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- QUESTIONS -->
+<div class="screen" id="sq">
+  <div class="hdr"><div class="logo">DEAL<span>CHECK</span></div><button class="hdr-btn" onclick="goTo('sl')">← EXIT</button></div>
+  <div class="qwrap"><div class="qcard" id="qcard"></div></div>
+</div>
+
+<!-- PROCESSING -->
+<div class="screen" id="sp">
+  <div class="hdr"><div class="logo">DEAL<span>CHECK</span></div><div class="hdr-tag">Analyzing</div></div>
+  <div style="flex:1;display:flex;align-items:center;justify-content:center;padding:40px 20px;">
+    <div class="procbox">
+      <div class="proctitle">Reading Your Deal</div>
+      <div class="procsub">Claude is analyzing your situation and writing your plays.</div>
+      <ul class="procsteps" id="psteps">
+        <li><span class="smark">—</span>Sizing up the opportunity</li>
+        <li><span class="smark">—</span>Checking who controls the decision</li>
+        <li><span class="smark">—</span>Assessing urgency and pain</li>
+        <li><span class="smark">—</span>Evaluating your internal support</li>
+        <li><span class="smark">—</span>Identifying the biggest risk</li>
+        <li><span class="smark">—</span>Writing your three plays</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- RESULTS -->
+<div class="screen" id="sr">
+  <div class="hdr"><div class="logo">DEAL<span>CHECK</span></div><div class="hdr-tag">Results</div></div>
+  <div class="rband">
+    <div><div class="rdname" id="rdname">—</div><div class="rdmeta" id="rdmeta">—</div></div>
+    <div style="margin-left:auto;display:flex;align-items:center;gap:14px;">
+      <div class="vbadge yellow" id="vbadge"><div class="vscore" id="vscore">—</div><div class="vlabel">Deal Health</div></div>
+      <button class="hdr-btn" onclick="goTo('sl')">New Deal</button>
+    </div>
+  </div>
+  <div class="rbody">
+    <div class="rsidebar">
+      <div class="sbhead">Health Check</div>
+      <div id="hlist"></div>
+      <div class="vbox" style="margin-top:18px;">
+        <div class="vboxlbl">Coach's Bottom Line</div>
+        <div class="vboxtxt" id="rbl">—</div>
+      </div>
+    </div>
+    <div class="rmain">
+      <div class="ptitle">Your Three Plays</div>
+      <div class="pinstr" id="pinstr">Claude is writing plays specific to your deal situation...</div>
+      <div id="pstack"></div>
+    </div>
+  </div>
+</div>
+
+<!-- HEALTH MODAL -->
+<div class="overlay" id="hovl" onclick="closeModal(event)">
+  <div class="modal"><button class="mclose" onclick="closeMod()">✕</button><div id="mcontent"></div></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ===== API KEY =====
+// Key lives server-side in ANTHROPIC_API_KEY env var — never exposed to browser
+
+// ===== QUESTIONS =====
+const Qs=[
+  {sec:"The Basics",txt:"What are you selling, and who is the target account?",hint:"Your product or service, company name, and what they make or do.",type:"ta",ph:"e.g. Vibration monitoring sensors for Acme Stamping, a Tier 2 auto supplier in Michigan. They run 3 shifts on 6 press lines.",key:"ctx"},
+  {sec:"The Basics",txt:"What is the deal size and how long have you been working it?",hint:"Approximate dollar value and how many weeks or months it has been active.",type:"ta",ph:"e.g. Around $120,000 per year. First meeting was about 10 weeks ago.",key:"size"},
+  {sec:"The Basics",txt:"Where does this deal stand right now?",hint:"Pick the one that best describes it.",type:"opt",opts:["Early — still figuring out if there's a real opportunity","Middle — proposal sent or evaluation in progress","Late — verbal yes, waiting on paperwork or final approval","Stalled — was moving, now quiet","At risk — I think we may be losing it"],other:false,key:"stage"},
+  {sec:"The Business Case",txt:"Does the customer know what this problem is actually costing them?",hint:"Not 'they want to improve efficiency' — a real dollar figure or quantified impact.",type:"opt",opts:["Yes — we've built and documented the cost together","They have a rough sense but nothing formal","They know it hurts but nobody has put a number on it","No — the pain is vague or assumed"],other:false,key:"bizcase"},
+  {sec:"The Decision",txt:"Who actually signs the check — and have you talked to them?",hint:"Not your day-to-day contact. The person who can approve this spend without asking anyone else.",type:"opt",opts:["Yes — I've met with them and they're engaged","I know who it is but haven't spoken to them directly","My contact says they're supportive but I can't confirm","I don't know who controls this budget"],other:false,key:"ebuyer"},
+  {sec:"The Decision",txt:"Do you know how this gets approved?",hint:"Who else is involved — procurement, IT, engineering, legal? Any formal process?",type:"ta",ph:"e.g. Plant manager recommends, VP Operations approves, procurement issues the PO. IT hasn't been looped in yet.",key:"decproc"},
+  {sec:"The Urgency",txt:"What is driving this decision — and is there a real deadline?",hint:"A budget cycle, an incident, a mandate. Or is there no urgency yet?",type:"opt",opts:["Strong — a specific incident, mandate, or deadline is forcing it","Moderate — it's a real priority but no hard deadline","Soft — it would be nice but nothing is forcing the issue","No urgency — this keeps getting deprioritized"],other:false,key:"urgency"},
+  {sec:"The Urgency",txt:"What is the pain that could make this a must-do?",hint:"What happened, what keeps happening, or what will happen if they do nothing?",type:"ta",ph:"e.g. They had a major press failure in January that cost them two days of production and a customer penalty. The plant manager got called out publicly.",key:"pain"},
+  {sec:"Your Support Inside",txt:"Who is in your corner inside this account — and how much pull do they have?",hint:"A real champion fights for you internally. A friendly contact just likes you.",type:"opt",opts:["Strong — real influence and actively selling for me inside","Moderate — they want it but haven't really gone to bat yet","Weak — they like us but don't have much power or urgency","None — I don't have a real champion yet"],other:false,key:"champ"},
+  {sec:"The Competition",txt:"What are you actually competing against?",hint:"Named competitors, the incumbent, internal resources, or just inertia.",type:"opt",opts:["A named competitor is actively being evaluated alongside us","The incumbent vendor or current process is the main obstacle","Internal resistance or 'do nothing' is the real competitor","I don't think there's significant competition"],other:false,key:"comp"},
+  {sec:"The Honest Assessment",txt:"What is the single biggest thing that could kill this deal?",hint:"Be straight. The more honest you are, the better the plays.",type:"opt",opts:["I haven't reached the person who controls the budget","The business case isn't strong enough to justify the spend","My champion is too weak to push it through","There's no real urgency — it keeps getting deprioritized","A competitor has a stronger relationship or position","The deal has gone quiet and I'm not sure it's alive","Internal approvals or procurement is the real blocker","Implementation risk or disruption fear is slowing it"],other:true,key:"killrisk"},
+  {sec:"Your Gut",txt:"What do you most need right now?",hint:"This shapes which three plays you get.",type:"opt",opts:["Accelerate a deal that's moving too slow","Get to the real decision maker","Build a stronger business case","Strengthen my champion or find a better one","Recover a deal that has gone quiet","Neutralize a competitor or the 'do nothing' option"],other:false,key:"need"}
+];
+
+// ===== HEALTH FACTORS (scored client-side, diagnosed by AI) =====
+const HF=[
+  {key:"hbiz",name:"Business Case",fn:a=>{
+    if(a.bizcase&&a.bizcase.includes("built and documented"))return{c:"green",s:"Solid"};
+    if(a.bizcase&&a.bizcase.includes("rough"))return{c:"amber",s:"Partial"};
+    return{c:"red",s:"Gap"};
+  }},
+  {key:"hbuyer",name:"Decision Maker",fn:a=>{
+    if(a.ebuyer&&a.ebuyer.includes("I've met"))return{c:"green",s:"Engaged"};
+    if(a.ebuyer&&a.ebuyer.includes("know who"))return{c:"amber",s:"Not Yet"};
+    return{c:"red",s:"Gap"};
+  }},
+  {key:"hurg",name:"Urgency",fn:a=>{
+    if(a.urgency&&a.urgency.includes("Strong"))return{c:"green",s:"Real"};
+    if(a.urgency&&a.urgency.includes("Moderate"))return{c:"amber",s:"Moderate"};
+    return{c:"red",s:"Weak"};
+  }},
+  {key:"hchamp",name:"Internal Champion",fn:a=>{
+    if(a.champ&&a.champ.includes("Strong"))return{c:"green",s:"Solid"};
+    if(a.champ&&a.champ.includes("Moderate"))return{c:"amber",s:"Unproven"};
+    return{c:"red",s:"Gap"};
+  }},
+  {key:"hdec",name:"Decision Process",fn:a=>{
+    if(a.decproc&&a.decproc.length>60)return{c:"amber",s:"Mapped"};
+    return{c:"amber",s:"Unclear"};
+  }},
+  {key:"hcomp",name:"Competitive Position",fn:a=>{
+    if(a.comp&&a.comp.includes("don't think"))return{c:"green",s:"Clear"};
+    return{c:"amber",s:"Watch It"};
+  }},
+  {key:"hmom",name:"Deal Momentum",fn:a=>{
+    if(a.stage&&a.stage.includes("Late"))return{c:"green",s:"Moving"};
+    if(a.stage&&(a.stage.includes("Stalled")||a.stage.includes("At risk")))return{c:"red",s:"Stalled"};
+    return{c:"amber",s:"In Progress"};
+  }}
+];
+
+// ===== STATE =====
+let cq=0, ans={}, selopt=null, aiResult=null;
+
+// ===== UTILS =====
+function goTo(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');}
+function showToast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
+
+// ===== QUESTIONS =====
+function startDeal(){cq=0;ans={};selopt=null;aiResult=null;renderQ();goTo('sq');}
+
+function renderQ(){
+  const q=Qs[cq];
+  const pct=Math.round(((cq+1)/Qs.length)*100);
+  selopt=ans[q.key]||null;
+  let inp='';
+  if(q.type==='ta'){
+    inp=`<textarea class="qta" id="qin" placeholder="${q.ph}" rows="4">${ans[q.key]||''}</textarea>`;
+  } else {
+    inp='<div class="qopts">';
+    q.opts.forEach(o=>{
+      const sel=ans[q.key]===o?'sel':'';
+      inp+=`<button class="qopt ${sel}" onclick="pickO(${JSON.stringify(o)},this)">${o}</button>`;
+    });
+    if(q.other){
+      const osel=ans[q.key]&&!q.opts.includes(ans[q.key])?'sel':'';
+      inp+=`<button class="qopt ${osel}" onclick="pickOther(this)" id="oopt">Other — I'll describe it</button>`;
+      inp+=`<input class="other-in ${osel?'vis':''}" id="oin" placeholder="Describe it briefly..." value="${osel?ans[q.key]:''}">`;
+    }
+    inp+='</div>';
+  }
+  const back=cq>0?`<button class="btns" onclick="prevQ()">← BACK</button>`:'';
+  const last=cq===Qs.length-1;
+  const skip=cq>2?`<button class="btnsk" onclick="skipQ()">Skip →</button>`:'';
+  document.getElementById('qcard').innerHTML=`
+    <div class="qprow"><div class="qptrack"><div class="qpfill" style="width:${pct}%"></div></div><div class="qptxt">${cq+1} / ${Qs.length}</div></div>
+    <div class="qsec">${q.sec}</div>
+    <div class="qtxt">${q.txt}</div>
+    ${q.hint?`<div class="qhint">${q.hint}</div>`:''}
+    ${inp}
+    <div class="qnav">${back}<button class="btnp" onclick="nextQ()">${last?'GET MY PLAYS →':'NEXT →'}</button>${skip}</div>`;
+}
+
+function pickO(v,el){document.querySelectorAll('.qopt').forEach(b=>b.classList.remove('sel'));el.classList.add('sel');selopt=v;const oi=document.getElementById('oin');if(oi)oi.classList.remove('vis');}
+function pickOther(el){document.querySelectorAll('.qopt').forEach(b=>b.classList.remove('sel'));el.classList.add('sel');selopt='__other__';const oi=document.getElementById('oin');if(oi){oi.classList.add('vis');oi.focus();}}
+function saveAns(){const q=Qs[cq];if(q.type==='ta'){ans[q.key]=(document.getElementById('qin')||{}).value||'';}else{if(selopt==='__other__'){const oi=document.getElementById('oin');ans[q.key]=oi?oi.value.trim():'';}else{ans[q.key]=selopt||'';}}}
+function nextQ(){saveAns();if(cq<Qs.length-1){cq++;renderQ();}else{runAn();}}
+function prevQ(){saveAns();if(cq>0){cq--;renderQ();}}
+function skipQ(){if(cq<Qs.length-1){cq++;renderQ();}}
+
+// ===== SCORING (client side) =====
+function calcScore(a){
+  let sc=50;
+  if(a.bizcase){if(a.bizcase.includes("built and documented"))sc+=12;else if(a.bizcase.includes("rough"))sc+=4;else if(a.bizcase.includes("vague")||a.bizcase.includes("No"))sc-=10;}
+  if(a.ebuyer){if(a.ebuyer.includes("I've met"))sc+=15;else if(a.ebuyer.includes("know who"))sc+=4;else if(a.ebuyer.includes("don't know"))sc-=15;}
+  if(a.urgency){if(a.urgency.includes("Strong"))sc+=12;else if(a.urgency.includes("Soft")||a.urgency.includes("No urgency"))sc-=12;}
+  if(a.champ){if(a.champ.includes("Strong"))sc+=10;else if(a.champ.includes("Weak")||a.champ.includes("None"))sc-=12;}
+  if(a.stage){if(a.stage.includes("Stalled"))sc-=15;if(a.stage.includes("At risk"))sc-=20;if(a.stage.includes("Late"))sc+=8;}
+  return Math.max(10,Math.min(94,sc));
+}
+
+// ===== ANALYSIS =====
+function runAn(){
+  goTo('sp');
+  const steps=document.querySelectorAll('#psteps li');
+  let i=0;
+  const iv=setInterval(()=>{
+    if(i>0){steps[i-1].classList.remove('active');steps[i-1].classList.add('done');steps[i-1].querySelector('.smark').textContent='✓';}
+    if(i<steps.length){steps[i].classList.add('active');i++;}
+    else{clearInterval(iv);}
+  },500);
+  // Fire API call in parallel
+  callClaudeAPI(ans).then(result=>{
+    aiResult=result;
+    // Make sure processing animation finished
+    setTimeout(()=>buildRes(), 3200);
+  }).catch(err=>{
+    aiResult={error: err.message};
+    setTimeout(()=>buildRes(), 3200);
+  });
+}
+
+// ===== CLAUDE API CALL =====
+async function callClaudeAPI(a){
+  const dealSummary = `
+DEAL CONTEXT:
+- What they sell: ${a.ctx||'Not provided'}
+- Deal size & timeline: ${a.size||'Not provided'}
+- Current stage: ${a.stage||'Not provided'}
+- Business case strength: ${a.bizcase||'Not provided'}
+- Economic buyer access: ${a.ebuyer||'Not provided'}
+- Decision process: ${a.decproc||'Not provided'}
+- Urgency level: ${a.urgency||'Not provided'}
+- The pain detail: ${a.pain||'Not provided'}
+- Champion strength: ${a.champ||'Not provided'}
+- Competition: ${a.comp||'Not provided'}
+- Biggest kill risk: ${a.killrisk||'Not provided'}
+- What the rep needs most: ${a.need||'Not provided'}
+`.trim();
+
+  const prompt = `You are a sharp, experienced industrial sales coach. A sales rep has just described a live deal they are working. Your job is to analyze it and output a JSON object — nothing else, no preamble, no markdown fences.
+
+${dealSummary}
+
+Analyze this deal and return ONLY valid JSON in this exact structure:
+
+{
+  "bottom_line": "2-3 sentence plain-English summary of the deal situation and the single most important thing to address. Be direct and specific. Reference details from their deal.",
+  "health_findings": {
+    "hbiz": "1-2 sentence specific finding about the business case strength based on what they said",
+    "hbuyer": "1-2 sentence specific finding about economic buyer access",
+    "hurg": "1-2 sentence specific finding about urgency",
+    "hchamp": "1-2 sentence specific finding about champion strength",
+    "hdec": "1-2 sentence specific finding about decision process clarity",
+    "hcomp": "1-2 sentence specific finding about competitive position",
+    "hmom": "1-2 sentence specific finding about deal momentum"
+  },
+  "play_instruction": "One sentence explaining which situation these three plays address and why you chose this focus.",
+  "plays": [
+    {
+      "mode": "aggressive",
+      "channel": "📞 Phone",
+      "timing": "Today",
+      "title": "Short, specific action title (not generic)",
+      "body": "2-3 sentence explanation of why this play and what to do. Be specific to their deal.",
+      "script": "The actual words to say or write. For email: include subject line. For phone: include the voicemail/opener. For physical mail: the note text. Make it sound human, credible, and specific to this deal. 100-200 words."
+    },
+    {
+      "mode": "moderate",
+      "channel": "✉️ Email + 📄 Document",
+      "timing": "This Week",
+      "title": "Short, specific action title",
+      "body": "2-3 sentence explanation specific to their deal.",
+      "script": "The actual words — subject line + email body or whatever is appropriate for this channel. Human, credible, specific. 100-200 words."
+    },
+    {
+      "mode": "passive",
+      "channel": "📦 Physical Mail",
+      "timing": "This Week",
+      "title": "Short, specific action title",
+      "body": "2-3 sentence explanation specific to their deal.",
+      "script": "The actual words. Human, credible, specific to their deal. 100-200 words."
+    }
+  ]
+}
+
+IMPORTANT RULES:
+- Every play must use a DIFFERENT channel (mix from: phone, email, physical mail, LinkedIn, video message, in-person, text, gifting)
+- Scripts must sound like a real industrial sales rep wrote them — not corporate, not AI-sounding
+- Reference specific details from their deal (company type, pain, stage, champion situation)
+- The aggressive play should create urgency or directness. The moderate play should build value. The passive play should be a soft touch or pattern interrupt.
+- Do NOT use MEDDICC language anywhere
+- Return ONLY the JSON object. No explanation before or after.`;
+
+  const response = await fetch('/api/analyze', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 1800,
+      messages: [{ role: 'user', content: prompt }]
+    })
+  });
+
+  if(!response.ok){
+    const err = await response.json().catch(()=>({}));
+    throw new Error(err.error?.message || `API error ${response.status}`);
+  }
+
+  const data = await response.json();
+  const text = data.content.find(b=>b.type==='text')?.text || '';
+  // Strip any accidental markdown fences
+  const clean = text.replace(/^```json\s*/,'').replace(/```\s*$/,'').trim();
+  return JSON.parse(clean);
+}
+
+// ===== BUILD RESULTS =====
+function buildRes(){
+  const a = ans;
+  const sc = calcScore(a);
+
+  // Deal header
+  const ctx=a.ctx||'Your Deal';
+  document.getElementById('rdname').textContent=ctx.length>55?ctx.substring(0,52)+'...':ctx;
+  document.getElementById('rdmeta').textContent=a.size||'— · Stage unknown';
+
+  // Score badge
+  let scoreLabel,bClass;
+  if(sc>=68){scoreLabel='STRONG';bClass='green';}else if(sc>=42){scoreLabel='AT RISK';bClass='yellow';}else{scoreLabel='CRITICAL';bClass='red';}
+  document.getElementById('vbadge').className=`vbadge ${bClass}`;
+  document.getElementById('vbadge').innerHTML=`<div class="vscore">${sc}</div><div class="vlabel">Deal Health</div>`;
+
+  // Health list (colors from client scoring, text from AI or fallback)
+  window._hfc={};
+  let hhtml='';
+  HF.forEach(hf=>{
+    const r=hf.fn(a);
+    const aiFinding = aiResult&&!aiResult.error&&aiResult.health_findings ? aiResult.health_findings[hf.key] : null;
+    window._hfc[hf.key]={name:hf.name, r, aiFinding, rawAnswer:a[hf.key]||'Not answered.'};
+    const statmap={red:'Needs Work',amber:'Watch This',green:'Solid'};
+    hhtml+=`<div class="hitem" onclick="openMod('${hf.key}')"><div class="hdot ${r.c}"></div><div><div class="hname">${hf.name}</div><div class="hstat">${statmap[r.c]}</div></div></div>`;
+  });
+  document.getElementById('hlist').innerHTML=hhtml;
+
+  // Bottom line — AI or fallback
+  let bl='';
+  if(aiResult&&!aiResult.error&&aiResult.bottom_line){
+    bl=aiResult.bottom_line;
+  } else {
+    if(a.stage&&(a.stage.includes("Stalled")||a.stage.includes("At risk")))bl="This deal has lost momentum. A standard follow-up won't fix it — you need a pattern interrupt and a direct conversation about whether this is still a priority.";
+    else if(a.ebuyer&&!a.ebuyer.includes("I've met"))bl="Your biggest gap is access to the budget owner. Until you're talking to the person who can say yes, you're negotiating through a window.";
+    else if(a.champ&&(a.champ.includes("Weak")||a.champ.includes("None")))bl="You don't have a champion who can carry this internally. Find who needs this to succeed most and invest in them.";
+    else bl="The deal has real pieces but meaningful gaps. Prioritize the budget owner and a concrete business case.";
+  }
+  document.getElementById('rbl').textContent=bl;
+
+  goTo('sr');
+
+  // Render plays
+  if(aiResult&&!aiResult.error&&aiResult.plays){
+    document.getElementById('pinstr').textContent=aiResult.play_instruction||'Here are three ways to move this deal forward — pick the one that fits your read on the buyer.';
+    renderPlays(aiResult.plays);
+  } else {
+    // Show error + skeleton
+    const errMsg = aiResult&&aiResult.error ? aiResult.error : 'Could not reach Claude API.';
+    document.getElementById('pinstr').textContent='Could not generate AI plays.';
+    document.getElementById('pstack').innerHTML=`<div class="err-box">⚠ ${errMsg}<br><br>Check your API key above and try again. Your deal health check above is still accurate.</div>`;
+  }
+}
+
+function renderPlays(plays){
+  window._plays=plays;
+  let phtml='';
+  plays.forEach((p,i)=>{
+    const mode=p.mode||['aggressive','moderate','passive'][i];
+    phtml+=`<div class="pcard" id="pc${i}" style="animation-delay:${i*.1}s">
+      <div class="pchdr" onclick="togPlay(${i})">
+        <div class="pbar ${mode}"></div>
+        <div class="pinnr">
+          <div class="ptoprow"><div class="pmode ${mode}">${mode.toUpperCase()}</div><div class="pchtag">${p.channel||''}</div><div class="ptiming">${p.timing||''}</div></div>
+          <div class="ptitletxt">${p.title||''}</div>
+          <div class="pbodytxt">${p.body||''}</div>
+        </div>
+        <div class="pexpbtn" id="pe${i}">+</div>
+      </div>
+      <div class="pexpanded">
+        <div class="psclbl">Script / What to Say</div>
+        <div class="pscbox">${p.script||''}</div>
+        <div class="pbtns">
+          <button class="pbtn pri" onclick="copyP(${i});event.stopPropagation()">COPY SCRIPT</button>
+          <button class="pbtn" onclick="showToast('Saved');event.stopPropagation()">SAVE</button>
+        </div>
+      </div>
+    </div>`;
+  });
+  document.getElementById('pstack').innerHTML=phtml;
+}
+
+function togPlay(i){
+  const c=document.getElementById('pc'+i);const b=document.getElementById('pe'+i);
+  const was=c.classList.contains('open');
+  document.querySelectorAll('.pcard').forEach((_,j)=>{document.getElementById('pc'+j)?.classList.remove('open');if(document.getElementById('pe'+j))document.getElementById('pe'+j).textContent='+';});
+  if(!was){c.classList.add('open');b.textContent='−';}
+}
+
+function copyP(i){
+  const p=window._plays&&window._plays[i];
+  if(!p)return;
+  navigator.clipboard.writeText(p.script||'').then(()=>showToast('Script copied ✓'));
+}
+
+function openMod(key){
+  const hf=window._hfc[key];if(!hf)return;
+  const r=hf.r;
+  const sm={red:'NEEDS WORK',amber:'WATCH THIS',green:'SOLID'};
+  const finding = hf.aiFinding || 'AI analysis not available — check your API key.';
+  document.getElementById('mcontent').innerHTML=`
+    <div class="meyebrow">Deal Health Check</div>
+    <div class="mtitle">${hf.name}</div>
+    <div class="mstatus ${r.c}">${sm[r.c]}</div>
+    <div class="mfinding">${finding}</div>
+    <div class="mwslbl">Based on What You Said</div>
+    <div class="mws">${hf.rawAnswer}</div>`;
+  document.getElementById('hovl').classList.add('open');
+}
+function closeMod(){document.getElementById('hovl').classList.remove('open');}
+function closeModal(e){if(e.target===document.getElementById('hovl'))closeMod();}
+</script>
+</body>
+</html>
