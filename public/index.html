@@ -222,9 +222,9 @@ body { background:var(--bg); color:var(--ink); font-family:var(--fb); min-height
     <div class="li">
       <div class="eyebrow">For Reps Who Sell to Manufacturers</div>
       <div class="headline">Is this deal<br><em>real</em> or just<br>wishful thinking?</div>
-      <div class="lbody">Answer 14 plain-English questions about your manufacturing deal. Get a health check on what's solid and what's missing — then receive three specific next steps to help close the deal: aggressive, moderate, or passive approaches.</div>
+      <div class="lbody">Answer 14 quick questions about your manufacturing deal. Get a health check on what's working and what's missing — then receive three specific actions you can take this week to move the deal forward.</div>
       <button class="start-btn" onclick="startDeal()">INSPECT MY DEAL →</button>
-      <div class="lnote">Takes about 5 minutes · Powered by Claude AI</div>
+      <div class="lnote">Takes about 5 minutes</div>
       <div class="ldiv"></div>
       <div class="wyg">
         <div><div class="wyg-n">14</div><div class="wyg-l">Manufacturing-focused questions</div></div>
@@ -275,7 +275,7 @@ body { background:var(--bg); color:var(--ink); font-family:var(--fb); min-height
   <div style="flex:1;display:flex;align-items:center;justify-content:center;padding:40px 20px;">
     <div class="procbox">
       <div class="proctitle">Reading Your Deal</div>
-      <div class="procsub">Claude is analyzing your situation and writing your plays.</div>
+      <div class="procsub">We're analyzing your deal and building your action plan.</div>
       <div class="progress-wrap">
         <div class="progress-bar"><div class="progress-fill" id="progfill"></div></div>
         <div class="progress-time" id="progtime">~15 seconds remaining</div>
@@ -286,7 +286,7 @@ body { background:var(--bg); color:var(--ink); font-family:var(--fb); min-height
         <li><span class="smark">—</span>Assessing urgency and pain</li>
         <li><span class="smark">—</span>Evaluating your internal support</li>
         <li><span class="smark">—</span>Identifying the biggest risk</li>
-        <li><span class="smark">—</span>Writing your three plays</li>
+        <li><span class="smark">—</span>Building your action plan</li>
       </ul>
     </div>
   </div>
@@ -313,8 +313,8 @@ body { background:var(--bg); color:var(--ink); font-family:var(--fb); min-height
       </div>
     </div>
     <div class="rmain">
-      <div class="ptitle">Your Three Plays</div>
-      <div class="pinstr" id="pinstr">Claude is writing plays specific to your deal situation...</div>
+      <div class="ptitle">Your Next Steps</div>
+      <div class="pinstr" id="pinstr">Here are three approaches to move this deal forward — pick the one that fits your situation.</div>
       <div id="pstack"></div>
     </div>
   </div>
@@ -369,7 +369,7 @@ const Qs=[
   {sec:"The Basics",txt:"What are you selling, and who is the target account?",hint:"Your product or service, company name, and what they make or do.",type:"ta",ph:"e.g. Vibration monitoring sensors for Acme Stamping, a Tier 2 auto supplier in Michigan. They run 3 shifts on 6 press lines.",key:"ctx"},
   {sec:"The Basics",txt:"What is the deal size and how long have you been working it?",hint:"Approximate dollar value and how many weeks or months it has been active.",type:"ta",ph:"e.g. Around $120,000 per year. First meeting was about 10 weeks ago.",key:"size"},
   {sec:"The Basics",txt:"What type of manufacturing operation is this?",hint:"This helps us tailor advice to their specific environment.",type:"opt",opts:["Automotive (OEM or Tier supplier)","Aerospace & Defense","Food & Beverage / CPG","Metal Fabrication / Job Shop","Plastics / Injection Molding","Pharma / Medical Device","General Industrial / Heavy Equipment","Other Manufacturing"],other:false,key:"vertical"},
-  {sec:"The Basics",txt:"Who is your primary contact at this account?",hint:"Their role shapes how we write your plays.",type:"opt",opts:["Plant Manager / Site Leader","VP or Director of Operations","Maintenance / Reliability Manager","Engineering Manager","Procurement / Purchasing","C-Suite (CEO, COO, CFO)","Floor Supervisor / Production Lead","Other"],other:true,key:"persona"},
+  {sec:"The Basics",txt:"Who is your primary contact at this account?",hint:"Their role shapes what we recommend.",type:"opt",opts:["Plant Manager / Site Leader","VP or Director of Operations","Maintenance / Reliability Manager","Engineering Manager","Procurement / Purchasing","C-Suite (CEO, COO, CFO)","Floor Supervisor / Production Lead","Other"],other:true,key:"persona"},
   {sec:"The Basics",txt:"Where does this deal stand right now?",hint:"Pick the one that best describes it.",type:"opt",opts:["Early — still figuring out if there's a real opportunity","Middle — proposal sent or evaluation in progress","Late — verbal yes, waiting on paperwork or final approval","Stalled — was moving, now quiet","At risk — I think we may be losing it"],other:false,key:"stage"},
   {sec:"The Business Case",txt:"Does the customer know what this problem is actually costing them?",hint:"Not 'they want to improve efficiency' — a real dollar figure or quantified impact.",type:"opt",opts:["Yes — we've built and documented the cost together","They have a rough sense but nothing formal","They know it hurts but nobody has put a number on it","No — the pain is vague or assumed"],other:false,key:"bizcase"},
   {sec:"The Decision",txt:"Who actually signs the check — and have you talked to them?",hint:"Not your day-to-day contact. The person who can approve this spend without asking anyone else.",type:"opt",opts:["Yes — I've met with them and they're engaged","I know who it is but haven't spoken to them directly","My contact says they're supportive but I can't confirm","I don't know who controls this budget"],other:false,key:"ebuyer"},
@@ -378,8 +378,8 @@ const Qs=[
   {sec:"The Urgency",txt:"What is the pain that could make this a must-do?",hint:"What happened, what keeps happening, or what will happen if they do nothing?",type:"ta",ph:"e.g. They had a major press failure in January that cost them two days of production and a customer penalty. The plant manager got called out publicly.",key:"pain"},
   {sec:"Your Support Inside",txt:"Who is in your corner inside this account — and how much pull do they have?",hint:"A real champion fights for you internally. A friendly contact just likes you.",type:"opt",opts:["Strong — real influence and actively selling for me inside","Moderate — they want it but haven't really gone to bat yet","Weak — they like us but don't have much power or urgency","None — I don't have a real champion yet"],other:false,key:"champ"},
   {sec:"The Competition",txt:"What are you actually competing against?",hint:"Named competitors, the incumbent, internal resources, or just inertia.",type:"opt",opts:["A named competitor is actively being evaluated alongside us","The incumbent vendor or current process is the main obstacle","Internal resistance or 'do nothing' is the real competitor","I don't think there's significant competition"],other:false,key:"comp"},
-  {sec:"The Honest Assessment",txt:"What is the single biggest thing that could kill this deal?",hint:"Be straight. The more honest you are, the better the plays.",type:"opt",opts:["I haven't reached the person who controls the budget","The business case isn't strong enough to justify the spend","My champion is too weak to push it through","There's no real urgency — it keeps getting deprioritized","A competitor has a stronger relationship or position","The deal has gone quiet and I'm not sure it's alive","Internal approvals or procurement is the real blocker","Implementation risk or disruption fear is slowing it"],other:true,key:"killrisk"},
-  {sec:"Your Gut",txt:"What do you most need right now?",hint:"This shapes which three plays you get.",type:"opt",opts:["Accelerate a deal that's moving too slow","Get to the real decision maker","Build a stronger business case","Strengthen my champion or find a better one","Recover a deal that has gone quiet","Neutralize a competitor or the 'do nothing' option"],other:false,key:"need"}
+  {sec:"The Honest Assessment",txt:"What is the single biggest thing that could kill this deal?",hint:"Be straight. The more honest you are, the better our recommendations.",type:"opt",opts:["I haven't reached the person who controls the budget","The business case isn't strong enough to justify the spend","My champion is too weak to push it through","There's no real urgency — it keeps getting deprioritized","A competitor has a stronger relationship or position","The deal has gone quiet and I'm not sure it's alive","Internal approvals or procurement is the real blocker","Implementation risk or disruption fear is slowing it"],other:true,key:"killrisk"},
+  {sec:"Your Gut",txt:"What do you most need right now?",hint:"This shapes our recommendations.",type:"opt",opts:["Accelerate a deal that's moving too slow","Get to the real decision maker","Build a stronger business case","Strengthen my champion or find a better one","Recover a deal that has gone quiet","Neutralize a competitor or the 'do nothing' option"],other:false,key:"need"}
 ];
 
 // ===== HEALTH FACTORS (scored client-side, diagnosed by AI) =====
@@ -834,7 +834,7 @@ function openMod(key){
   const hf=window._hfc[key];if(!hf)return;
   const r=hf.r;
   const sm={red:'NEEDS WORK',amber:'WATCH THIS',green:'SOLID'};
-  const finding = hf.aiFinding || 'AI analysis not available — check your API key.';
+  const finding = hf.aiFinding || 'Analysis not available.';
   document.getElementById('mcontent').innerHTML=`
     <div class="meyebrow">Deal Health Check</div>
     <div class="mtitle">${hf.name}</div>
