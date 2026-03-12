@@ -82,6 +82,10 @@ body { background:var(--bg); color:var(--ink); font-family:var(--fb); min-height
 .procsteps li.active { color:var(--blue); font-weight:600; }
 .procsteps li.done { color:var(--green); }
 .smark { width:16px; text-align:center; font-size:12px; }
+.progress-wrap { margin-bottom:24px; }
+.progress-bar { height:6px; background:var(--bg3); border-radius:3px; overflow:hidden; }
+.progress-fill { height:100%; width:0%; background:linear-gradient(90deg,var(--blue),var(--accent)); transition:width 0.5s ease; }
+.progress-time { font-family:var(--fh); font-size:11px; letter-spacing:2px; color:var(--ink4); text-transform:uppercase; margin-top:8px; text-align:center; }
 
 /* RESULTS */
 .rband { background:var(--blue); padding:18px 32px; display:flex; align-items:center; gap:20px; flex-wrap:wrap; flex-shrink:0; }
@@ -210,6 +214,10 @@ body { background:var(--bg); color:var(--ink); font-family:var(--fb); min-height
     <div class="procbox">
       <div class="proctitle">Reading Your Deal</div>
       <div class="procsub">Claude is analyzing your situation and writing your plays.</div>
+      <div class="progress-wrap">
+        <div class="progress-bar"><div class="progress-fill" id="progfill"></div></div>
+        <div class="progress-time" id="progtime">~15 seconds remaining</div>
+      </div>
       <ul class="procsteps" id="psteps">
         <li><span class="smark">—</span>Sizing up the opportunity</li>
         <li><span class="smark">—</span>Checking who controls the decision</li>
@@ -392,20 +400,47 @@ function calcScore(a){
 function runAn(){
   goTo('sp');
   const steps=document.querySelectorAll('#psteps li');
+  const progfill=document.getElementById('progfill');
+  const progtime=document.getElementById('progtime');
   let i=0;
+  let apiDone=false;
+  const totalTime=18; // estimated seconds
+  let elapsed=0;
+  
+  // Progress bar animation
+  const progIv=setInterval(()=>{
+    elapsed+=0.5;
+    const pct=Math.min(95, (elapsed/totalTime)*100);
+    progfill.style.width=pct+'%';
+    const remaining=Math.max(0,Math.ceil(totalTime-elapsed));
+    progtime.textContent=remaining>0?`~${remaining} seconds remaining`:'Almost done...';
+    if(apiDone && elapsed>=totalTime){clearInterval(progIv);}
+  },500);
+  
+  // Step animation (slower to match ~18s)
+  const stepInterval=2800;
   const iv=setInterval(()=>{
     if(i>0){steps[i-1].classList.remove('active');steps[i-1].classList.add('done');steps[i-1].querySelector('.smark').textContent='✓';}
     if(i<steps.length){steps[i].classList.add('active');i++;}
     else{clearInterval(iv);}
-  },500);
+  },stepInterval);
+  
   // Fire API call in parallel
   callClaudeAPI(ans).then(result=>{
     aiResult=result;
-    // Make sure processing animation finished
-    setTimeout(()=>buildRes(), 3200);
+    apiDone=true;
+    // Complete progress bar and show results
+    progfill.style.width='100%';
+    progtime.textContent='Done!';
+    setTimeout(()=>buildRes(), 800);
   }).catch(err=>{
     aiResult={error: err.message};
-    setTimeout(()=>buildRes(), 3200);
+    apiDone=true;
+    clearInterval(progIv);
+    clearInterval(iv);
+    progfill.style.width='100%';
+    progtime.textContent='Done';
+    setTimeout(()=>buildRes(), 500);
   });
 }
 
