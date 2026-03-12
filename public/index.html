@@ -246,7 +246,7 @@ body { background:var(--bg); color:var(--ink); font-family:var(--fb); min-height
       <form id="leadForm" onsubmit="submitLead(event)">
         <input type="text" class="gate-input" id="leadName" placeholder="Your Name" required>
         <input type="tel" class="gate-input" id="leadPhone" placeholder="Phone Number" required>
-        <input type="email" class="gate-input" id="leadEmail" placeholder="Business Email" required>
+        <input type="email" class="gate-input" id="leadEmail" placeholder="Business Email" required pattern="^[a-zA-Z0-9._%+-]+@(?!gmail\.com)(?!yahoo\.com)(?!hotmail\.com)(?!outlook\.com)(?!aol\.com)(?!icloud\.com)(?!mail\.com)[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" title="Please enter a business email address (no Gmail, Yahoo, Hotmail, etc.)">
         <div class="gate-consent">
           <label class="consent-label">
             <input type="checkbox" id="leadConsent" required>
@@ -451,10 +451,20 @@ async function submitLead(e){
   const errEl = document.getElementById('gateError');
   errEl.style.display = 'none';
   
+  const email = document.getElementById('leadEmail').value.trim().toLowerCase();
+  const blockedDomains = ['gmail.com','yahoo.com','hotmail.com','outlook.com','aol.com','icloud.com','mail.com','ymail.com','live.com','msn.com','protonmail.com','zoho.com'];
+  const emailDomain = email.split('@')[1];
+  
+  if(blockedDomains.includes(emailDomain)){
+    errEl.textContent = 'Please enter a business email address.';
+    errEl.style.display = 'block';
+    return;
+  }
+  
   leadInfo = {
     name: document.getElementById('leadName').value.trim(),
     phone: document.getElementById('leadPhone').value.trim(),
-    email: document.getElementById('leadEmail').value.trim()
+    email: email
   };
   
   btn.disabled = true;
