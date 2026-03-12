@@ -231,8 +231,8 @@ body { background:var(--bg); color:var(--ink); font-family:var(--fb); min-height
       <div class="gate-sub">Enter your info to get your personalized deal analysis and AI-generated plays.</div>
       <form id="leadForm" onsubmit="submitLead(event)">
         <input type="text" class="gate-input" id="leadName" placeholder="Your Name" required>
-        <input type="email" class="gate-input" id="leadEmail" placeholder="Work Email" required>
-        <input type="text" class="gate-input" id="leadCompany" placeholder="Company Name">
+        <input type="tel" class="gate-input" id="leadPhone" placeholder="Phone Number" required>
+        <input type="email" class="gate-input" id="leadEmail" placeholder="Business Email" required>
         <button type="submit" class="gate-btn" id="gateBtn">START MY ANALYSIS →</button>
         <div class="gate-error" id="gateError">Something went wrong. Please try again.</div>
       </form>
@@ -388,8 +388,8 @@ async function submitLead(e){
   
   leadInfo = {
     name: document.getElementById('leadName').value.trim(),
-    email: document.getElementById('leadEmail').value.trim(),
-    company: document.getElementById('leadCompany').value.trim()
+    phone: document.getElementById('leadPhone').value.trim(),
+    email: document.getElementById('leadEmail').value.trim()
   };
   
   btn.disabled = true;
@@ -401,8 +401,8 @@ async function submitLead(e){
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         name: leadInfo.name,
+        phone: leadInfo.phone,
         email: leadInfo.email,
-        company: leadInfo.company,
         source: 'DealCheck Manufacturing'
       })
     });
