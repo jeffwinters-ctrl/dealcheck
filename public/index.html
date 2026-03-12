@@ -331,14 +331,14 @@ function renderQ(){
   if(q.type==='ta'){
     inp=`<textarea class="qta" id="qin" placeholder="${q.ph}" rows="4">${ans[q.key]||''}</textarea>`;
   } else {
-    inp='<div class="qopts">';
-    q.opts.forEach(o=>{
+    inp='<div class="qopts" id="qopts">';
+    q.opts.forEach((o,idx)=>{
       const sel=ans[q.key]===o?'sel':'';
-      inp+=`<button class="qopt ${sel}" onclick="pickO(${JSON.stringify(o)},this)">${o}</button>`;
+      inp+=`<button class="qopt ${sel}" data-idx="${idx}">${o}</button>`;
     });
     if(q.other){
       const osel=ans[q.key]&&!q.opts.includes(ans[q.key])?'sel':'';
-      inp+=`<button class="qopt ${osel}" onclick="pickOther(this)" id="oopt">Other — I'll describe it</button>`;
+      inp+=`<button class="qopt ${osel}" data-idx="other" id="oopt">Other — I'll describe it</button>`;
       inp+=`<input class="other-in ${osel?'vis':''}" id="oin" placeholder="Describe it briefly..." value="${osel?ans[q.key]:''}">`;
     }
     inp+='</div>';
@@ -353,6 +353,21 @@ function renderQ(){
     ${q.hint?`<div class="qhint">${q.hint}</div>`:''}
     ${inp}
     <div class="qnav">${back}<button class="btnp" onclick="nextQ()">${last?'GET MY PLAYS →':'NEXT →'}</button>${skip}</div>`;
+  
+  // Attach click handlers for options
+  const optsContainer = document.getElementById('qopts');
+  if(optsContainer){
+    optsContainer.addEventListener('click', function(e){
+      const btn = e.target.closest('.qopt');
+      if(!btn) return;
+      const idx = btn.dataset.idx;
+      if(idx === 'other'){
+        pickOther(btn);
+      } else {
+        pickO(Qs[cq].opts[parseInt(idx)], btn);
+      }
+    });
+  }
 }
 
 function pickO(v,el){document.querySelectorAll('.qopt').forEach(b=>b.classList.remove('sel'));el.classList.add('sel');selopt=v;const oi=document.getElementById('oin');if(oi)oi.classList.remove('vis');}
