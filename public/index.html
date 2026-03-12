@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DealCheck — Industrial Sales Coach</title>
+<title>DealCheck — Manufacturing Sales Coach | Presented by Sapper</title>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Source+Sans+3:wght@300;400;500;600&family=Source+Serif+4:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
@@ -21,7 +21,7 @@ body { background:var(--bg); color:var(--ink); font-family:var(--fb); min-height
 .logo { font-family:var(--fh); font-size:22px; letter-spacing:3px; color:#fff; font-weight:700; }
 .logo span { color:var(--blue); }
 .hdr-tag { font-family:var(--fh); font-size:11px; letter-spacing:3px; color:rgba(255,255,255,0.45); text-transform:uppercase; }
-.hdr-brand { font-family:var(--fb); font-size:10px; letter-spacing:1px; color:rgba(255,255,255,0.35); margin-left:auto; margin-right:20px; }
+.hdr-brand { font-family:var(--fh); font-size:12px; letter-spacing:2px; color:var(--blue); margin-left:16px; padding:4px 12px; border:1px solid var(--blue); text-transform:uppercase; }
 .hdr-btn { background:none; border:1px solid rgba(255,255,255,0.25); color:rgba(255,255,255,0.6); padding:8px 16px; font-family:var(--fh); font-size:12px; letter-spacing:2px; cursor:pointer; text-transform:uppercase; transition:all .15s; }
 .hdr-btn:hover { border-color:rgba(255,255,255,.6); color:#fff; }
 
@@ -175,6 +175,10 @@ body { background:var(--bg); color:var(--ink); font-family:var(--fb); min-height
 .toast { position:fixed; bottom:26px; left:50%; transform:translateX(-50%) translateY(70px); background:var(--blue); color:#fff; padding:11px 22px; font-family:var(--fh); font-size:13px; letter-spacing:2px; text-transform:uppercase; transition:transform .3s ease; z-index:999; border-top:2px solid var(--accent); }
 .toast.show { transform:translateX(-50%) translateY(0); }
 
+.footer { background:#0a0a0a; padding:16px 32px; text-align:center; border-top:2px solid var(--blue); }
+.footer-brand { font-family:var(--fh); font-size:14px; letter-spacing:3px; color:var(--blue); text-transform:uppercase; }
+.footer-brand span { color:#fff; }
+
 @keyframes fadeUp { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
 ::-webkit-scrollbar{width:4px} ::-webkit-scrollbar-track{background:var(--bg2)} ::-webkit-scrollbar-thumb{background:var(--rule)}
 </style>
@@ -183,29 +187,31 @@ body { background:var(--bg); color:var(--ink); font-family:var(--fb); min-height
 
 <!-- LANDING -->
 <div class="screen active" id="sl">
-  <div class="hdr"><div class="logo">DEAL<span>CHECK</span></div><div class="hdr-brand">Presented by Sapper</div><div class="hdr-tag">AI-Powered Industrial Sales Coach</div></div>
+  <div class="hdr"><div class="logo">DEAL<span>CHECK</span></div><div class="hdr-brand">Presented by Sapper</div><div class="hdr-tag">Manufacturing Sales Coach</div></div>
 
   <div style="flex:1;display:flex;align-items:center;justify-content:center;padding:48px 20px;">
     <div class="li">
       <div class="eyebrow">For Reps Who Sell to Manufacturers</div>
       <div class="headline">Is this deal<br><em>real</em> or just<br>wishful thinking?</div>
-      <div class="lbody">Answer 12 plain-English questions. Get a health check on what's solid and what's missing — then receive three AI-generated plays written specifically for your deal: aggressive, moderate, or passive.</div>
+      <div class="lbody">Answer 14 plain-English questions about your manufacturing deal. Get a health check on what's solid and what's missing — then receive three AI-generated plays written specifically for your persona and vertical: aggressive, moderate, or passive.</div>
       <button class="start-btn" onclick="startDeal()">INSPECT MY DEAL →</button>
-      <div class="lnote">Takes about 4 minutes · Powered by Claude AI</div>
+      <div class="lnote">Takes about 5 minutes · Powered by Claude AI</div>
       <div class="ldiv"></div>
       <div class="wyg">
-        <div><div class="wyg-n">12</div><div class="wyg-l">Diagnostic questions, no jargon</div></div>
+        <div><div class="wyg-n">14</div><div class="wyg-l">Manufacturing-focused questions</div></div>
         <div><div class="wyg-n">7</div><div class="wyg-l">Deal health factors checked</div></div>
         <div><div class="wyg-n">3</div><div class="wyg-l">AI plays — aggressive, moderate, passive</div></div>
       </div>
     </div>
   </div>
+  <div class="footer"><div class="footer-brand"><span>Presented by</span> SAPPER</div></div>
 </div>
 
 <!-- QUESTIONS -->
 <div class="screen" id="sq">
   <div class="hdr"><div class="logo">DEAL<span>CHECK</span></div><div class="hdr-brand">Presented by Sapper</div><button class="hdr-btn" onclick="goTo('sl')">← EXIT</button></div>
   <div class="qwrap"><div class="qcard" id="qcard"></div></div>
+  <div class="footer"><div class="footer-brand"><span>Presented by</span> SAPPER</div></div>
 </div>
 
 <!-- PROCESSING -->
@@ -229,6 +235,7 @@ body { background:var(--bg); color:var(--ink); font-family:var(--fb); min-height
       </ul>
     </div>
   </div>
+  <div class="footer"><div class="footer-brand"><span>Presented by</span> SAPPER</div></div>
 </div>
 
 <!-- RESULTS -->
@@ -273,6 +280,8 @@ body { background:var(--bg); color:var(--ink); font-family:var(--fb); min-height
 const Qs=[
   {sec:"The Basics",txt:"What are you selling, and who is the target account?",hint:"Your product or service, company name, and what they make or do.",type:"ta",ph:"e.g. Vibration monitoring sensors for Acme Stamping, a Tier 2 auto supplier in Michigan. They run 3 shifts on 6 press lines.",key:"ctx"},
   {sec:"The Basics",txt:"What is the deal size and how long have you been working it?",hint:"Approximate dollar value and how many weeks or months it has been active.",type:"ta",ph:"e.g. Around $120,000 per year. First meeting was about 10 weeks ago.",key:"size"},
+  {sec:"The Basics",txt:"What type of manufacturing operation is this?",hint:"This helps us tailor advice to their specific environment.",type:"opt",opts:["Automotive (OEM or Tier supplier)","Aerospace & Defense","Food & Beverage / CPG","Metal Fabrication / Job Shop","Plastics / Injection Molding","Pharma / Medical Device","General Industrial / Heavy Equipment","Other Manufacturing"],other:false,key:"vertical"},
+  {sec:"The Basics",txt:"Who is your primary contact at this account?",hint:"Their role shapes how we write your plays.",type:"opt",opts:["Plant Manager / Site Leader","VP or Director of Operations","Maintenance / Reliability Manager","Engineering Manager","Procurement / Purchasing","C-Suite (CEO, COO, CFO)","Floor Supervisor / Production Lead","Other"],other:true,key:"persona"},
   {sec:"The Basics",txt:"Where does this deal stand right now?",hint:"Pick the one that best describes it.",type:"opt",opts:["Early — still figuring out if there's a real opportunity","Middle — proposal sent or evaluation in progress","Late — verbal yes, waiting on paperwork or final approval","Stalled — was moving, now quiet","At risk — I think we may be losing it"],other:false,key:"stage"},
   {sec:"The Business Case",txt:"Does the customer know what this problem is actually costing them?",hint:"Not 'they want to improve efficiency' — a real dollar figure or quantified impact.",type:"opt",opts:["Yes — we've built and documented the cost together","They have a rough sense but nothing formal","They know it hurts but nobody has put a number on it","No — the pain is vague or assumed"],other:false,key:"bizcase"},
   {sec:"The Decision",txt:"Who actually signs the check — and have you talked to them?",hint:"Not your day-to-day contact. The person who can approve this spend without asking anyone else.",type:"opt",opts:["Yes — I've met with them and they're engaged","I know who it is but haven't spoken to them directly","My contact says they're supportive but I can't confirm","I don't know who controls this budget"],other:false,key:"ebuyer"},
@@ -451,6 +460,8 @@ async function callClaudeAPI(a){
 DEAL CONTEXT:
 - What they sell: ${a.ctx||'Not provided'}
 - Deal size & timeline: ${a.size||'Not provided'}
+- Manufacturing vertical: ${a.vertical||'Not provided'}
+- Primary contact role: ${a.persona||'Not provided'}
 - Current stage: ${a.stage||'Not provided'}
 - Business case strength: ${a.bizcase||'Not provided'}
 - Economic buyer access: ${a.ebuyer||'Not provided'}
@@ -463,58 +474,97 @@ DEAL CONTEXT:
 - What the rep needs most: ${a.need||'Not provided'}
 `.trim();
 
-  const prompt = `You are a sharp, experienced industrial sales coach. A sales rep has just described a live deal they are working. Your job is to analyze it and output a JSON object — nothing else, no preamble, no markdown fences.
+  const personaContext = {
+    "Plant Manager / Site Leader": "Plant Managers care about OEE, hitting production targets, and not getting called out by corporate. They think in shifts, headcount, and uptime. They hate surprises and vendor drama. Speak their language: production hours, scrap rates, unplanned downtime costs ($5K-$50K/hour typical).",
+    "VP or Director of Operations": "VP Ops sees across multiple plants. They care about standardization, scalability, and metrics they report to the C-suite. They're thinking about CapEx vs OpEx, ROI timelines, and competitive benchmarking. Reference industry benchmarks and total cost of ownership.",
+    "Maintenance / Reliability Manager": "Maintenance managers live in reactive mode and dream of predictive. They track MTBF, MTTR, PM compliance. They're skeptical of vendors who don't understand their constraints (skeleton crews, aging equipment, tribal knowledge). Speak to reliability, ease of implementation, and not adding to their plate.",
+    "Engineering Manager": "Engineers want specs, data, and proof. They'll kick tires hard. They care about integration, accuracy, and whether this actually works in their environment. Provide technical credibility but don't oversell.",
+    "Procurement / Purchasing": "Procurement cares about price, terms, approved vendor lists, and not getting blamed. They're not the decision maker but can block or slow deals. Focus on total value, risk reduction, and making their job easier.",
+    "C-Suite (CEO, COO, CFO)": "Executives want business impact in 30 seconds. ROI, payback period, competitive advantage, risk. They'll delegate the details but need to see strategic fit. Think big picture: market position, customer retention, margin improvement.",
+    "Floor Supervisor / Production Lead": "Floor supervisors are the end users. They care about whether this makes their shift easier or harder. They have huge informal influence. Win them over with simplicity and respect for their expertise."
+  };
+
+  const verticalContext = {
+    "Automotive (OEM or Tier supplier)": "Automotive: Razor-thin margins, brutal OEM pressure, quality escapes are career-ending. IATF 16949 compliance matters. Downtime during launch or peak season is catastrophic. Tier 1s squeeze Tier 2s who squeeze Tier 3s.",
+    "Aerospace & Defense": "Aerospace: Long sales cycles, heavy compliance (AS9100, ITAR), extreme quality requirements. Relationships matter enormously. Budget cycles tied to contracts and programs. Decisions move slowly but stick.",
+    "Food & Beverage / CPG": "Food & Bev: FDA/USDA compliance, sanitation requirements, seasonal demand spikes. Downtime during peak season (holidays, summer) is devastating. Margins are tight, volume is everything.",
+    "Metal Fabrication / Job Shop": "Job Shops: High mix, low volume. Every job is different. They compete on speed and flexibility. Cash flow is king. Owner-operators make fast decisions but hate risk. Skilled labor shortage is real.",
+    "Plastics / Injection Molding": "Plastics: Cycle time is money. Scrap rates and regrind quality matter. Mold changeovers and maintenance windows are tight. Energy costs are significant. Often serving automotive or medical with their compliance requirements.",
+    "Pharma / Medical Device": "Pharma/Medical: FDA 21 CFR Part 11, validation requirements, change control is painful. Long implementation cycles but sticky once in. Quality and compliance trump cost. Document everything.",
+    "General Industrial / Heavy Equipment": "Heavy Industrial: Large CapEx decisions, long equipment life cycles. Maintenance and reliability are huge. Often running legacy equipment. Safety incidents are a big deal. Decisions can be slow but relationships last decades."
+  };
+
+  const personaInfo = personaContext[a.persona] || "Tailor your approach to their specific role and what they care about day-to-day.";
+  const verticalInfo = verticalContext[a.vertical] || "Consider the specific pressures and priorities of their manufacturing environment.";
+
+  const prompt = `You are a sharp, experienced manufacturing sales coach who has spent 20 years selling to plants and factories. A sales rep has described a live deal. Analyze it and output ONLY a JSON object — no preamble, no markdown fences.
 
 ${dealSummary}
+
+MANUFACTURING CONTEXT FOR THIS DEAL:
+${verticalInfo}
+
+PERSONA INSIGHT (their primary contact is: ${a.persona||'Unknown'}):
+${personaInfo}
+
+MANUFACTURING INDUSTRY KNOWLEDGE TO APPLY:
+- Unplanned downtime costs $5,000-$50,000+ per hour depending on the operation
+- OEE benchmarks: World-class is 85%+, average is 60%, struggling plants are 40-50%
+- Maintenance teams are typically understaffed and overwhelmed with reactive work
+- CapEx requires VP+ approval and often waits for budget cycles; OpEx can sometimes move faster
+- Plant managers get measured on safety, quality, delivery, and cost — in that order
+- "Pilot programs" are how risk-averse manufacturers try new things
+- The real decision often happens on the plant floor before it reaches the boardroom
 
 Analyze this deal and return ONLY valid JSON in this exact structure:
 
 {
-  "bottom_line": "2-3 sentence plain-English summary of the deal situation and the single most important thing to address. Be direct and specific. Reference details from their deal.",
+  "bottom_line": "2-3 sentence summary referencing their specific manufacturing context, persona, and the single most important thing to address. Be direct. Use manufacturing language.",
   "health_findings": {
-    "hbiz": "1-2 sentence specific finding about the business case strength based on what they said",
-    "hbuyer": "1-2 sentence specific finding about economic buyer access",
-    "hurg": "1-2 sentence specific finding about urgency",
-    "hchamp": "1-2 sentence specific finding about champion strength",
-    "hdec": "1-2 sentence specific finding about decision process clarity",
-    "hcomp": "1-2 sentence specific finding about competitive position",
-    "hmom": "1-2 sentence specific finding about deal momentum"
+    "hbiz": "1-2 sentence finding about business case strength — reference manufacturing-specific ROI factors like downtime, scrap, labor, compliance",
+    "hbuyer": "1-2 sentence finding about economic buyer access — consider typical approval chains in manufacturing",
+    "hurg": "1-2 sentence finding about urgency — what manufacturing events or pressures could create urgency",
+    "hchamp": "1-2 sentence finding about champion strength — consider their role's influence in a plant environment",
+    "hdec": "1-2 sentence finding about decision process — typical manufacturing buying process considerations",
+    "hcomp": "1-2 sentence finding about competitive position — including 'do nothing' and internal resources",
+    "hmom": "1-2 sentence finding about deal momentum — what's typical for this stage in manufacturing sales"
   },
-  "play_instruction": "One sentence explaining which situation these three plays address and why you chose this focus.",
+  "play_instruction": "One sentence explaining how these plays are tailored to the ${a.persona||'contact'} at a ${a.vertical||'manufacturing'} operation.",
   "plays": [
     {
       "mode": "aggressive",
-      "channel": "📞 Phone",
+      "channel": "📞 Phone + 🏭 Plant Visit Ask",
       "timing": "Today",
-      "title": "Short, specific action title (not generic)",
-      "body": "2-3 sentence explanation of why this play and what to do. Be specific to their deal.",
-      "script": "The actual words to say or write. For email: include subject line. For phone: include the voicemail/opener. For physical mail: the note text. Make it sound human, credible, and specific to this deal. 100-200 words."
+      "title": "Short, specific action title for this persona",
+      "body": "2-3 sentences explaining why this play works for a ${a.persona||'manufacturing contact'}. Reference their specific pressures.",
+      "script": "The actual words — written specifically for a ${a.persona||'manufacturing contact'}. Use manufacturing language they'd use. Reference their vertical's specific concerns. For phone: include the voicemail. 100-200 words."
     },
     {
       "mode": "moderate",
-      "channel": "✉️ Email + 📄 Document",
+      "channel": "✉️ Email + 📊 ROI One-Pager",
       "timing": "This Week",
       "title": "Short, specific action title",
-      "body": "2-3 sentence explanation specific to their deal.",
-      "script": "The actual words — subject line + email body or whatever is appropriate for this channel. Human, credible, specific. 100-200 words."
+      "body": "2-3 sentences specific to their manufacturing context.",
+      "script": "Email with subject line — written for this persona. Include specific manufacturing metrics or benchmarks relevant to their vertical. 100-200 words."
     },
     {
       "mode": "passive",
-      "channel": "📦 Physical Mail",
+      "channel": "📦 Drop-off at Plant",
       "timing": "This Week",
       "title": "Short, specific action title",
-      "body": "2-3 sentence explanation specific to their deal.",
-      "script": "The actual words. Human, credible, specific to their deal. 100-200 words."
+      "body": "2-3 sentence explanation — a soft touch that works in manufacturing.",
+      "script": "What to drop off and the handwritten note to include. Make it something useful for their role. 100-200 words."
     }
   ]
 }
 
-IMPORTANT RULES:
-- Every play must use a DIFFERENT channel (mix from: phone, email, physical mail, LinkedIn, video message, in-person, text, gifting)
-- Scripts must sound like a real industrial sales rep wrote them — not corporate, not AI-sounding
-- Reference specific details from their deal (company type, pain, stage, champion situation)
-- The aggressive play should create urgency or directness. The moderate play should build value. The passive play should be a soft touch or pattern interrupt.
-- Do NOT use MEDDICC language anywhere
+CRITICAL RULES:
+- Write scripts that sound like a real manufacturing sales rep, not a corporate marketing team
+- Reference specific details from their deal AND their manufacturing vertical
+- Tailor language and approach to the ${a.persona||'contact'}'s role and what they care about
+- The aggressive play should get a meeting or decision. The moderate play should build value and credibility. The passive play should be a memorable pattern interrupt.
+- Use manufacturing terminology naturally (OEE, MTBF, downtime, shifts, changeovers, scrap, etc.) but don't overdo it
+- Do NOT use MEDDICC or generic sales methodology language
 - Return ONLY the JSON object. No explanation before or after.`;
 
   const response = await fetch('/api/analyze', {
