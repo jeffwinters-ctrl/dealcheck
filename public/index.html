@@ -8,19 +8,20 @@
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
 :root {
-  --bg:#f0ece4; --bg2:#e8e3d9; --bg3:#ddd8ce;
-  --surface:#faf8f4; --ink:#1a1a18; --ink2:#3d3d38; --ink3:#7a7a72; --ink4:#a8a89e;
-  --rule:#c8c3b8; --red:#b33a2a; --amber:#c47a1a; --green:#2a6640; --blue:#1e3d5c; --accent:#b33a2a;
+  --bg:#f5f8fa; --bg2:#e8eef3; --bg3:#d4dfe8;
+  --surface:#ffffff; --ink:#0a0a0a; --ink2:#1a1a1a; --ink3:#4a5568; --ink4:#718096;
+  --rule:#cbd5e0; --red:#e53e3e; --amber:#d69e2e; --green:#38a169; --blue:#3b82f6; --accent:#1e40af;
   --fh:'Oswald',sans-serif; --fb:'Source Sans 3',sans-serif; --fs:'Source Serif 4',serif;
 }
 body { background:var(--bg); color:var(--ink); font-family:var(--fb); min-height:100vh; }
 .screen { display:none; min-height:100vh; flex-direction:column; }
 .screen.active { display:flex; }
 
-.hdr { background:var(--blue); padding:14px 32px; display:flex; align-items:center; justify-content:space-between; border-bottom:3px solid var(--accent); flex-shrink:0; }
+.hdr { background:#0a0a0a; padding:14px 32px; display:flex; align-items:center; justify-content:space-between; border-bottom:3px solid var(--blue); flex-shrink:0; }
 .logo { font-family:var(--fh); font-size:22px; letter-spacing:3px; color:#fff; font-weight:700; }
-.logo span { color:#f0a070; }
+.logo span { color:var(--blue); }
 .hdr-tag { font-family:var(--fh); font-size:11px; letter-spacing:3px; color:rgba(255,255,255,0.45); text-transform:uppercase; }
+.hdr-brand { font-family:var(--fb); font-size:10px; letter-spacing:1px; color:rgba(255,255,255,0.35); margin-left:auto; margin-right:20px; }
 .hdr-btn { background:none; border:1px solid rgba(255,255,255,0.25); color:rgba(255,255,255,0.6); padding:8px 16px; font-family:var(--fh); font-size:12px; letter-spacing:2px; cursor:pointer; text-transform:uppercase; transition:all .15s; }
 .hdr-btn:hover { border-color:rgba(255,255,255,.6); color:#fff; }
 
@@ -35,7 +36,7 @@ body { background:var(--bg); color:var(--ink); font-family:var(--fb); min-height
 .headline em { color:var(--accent); font-style:normal; }
 .lbody { font-family:var(--fs); font-size:16px; color:var(--ink2); line-height:1.7; margin-bottom:36px; border-left:3px solid var(--rule); padding-left:18px; }
 .start-btn { background:var(--blue); color:#fff; border:none; padding:15px 38px; font-family:var(--fh); font-size:20px; letter-spacing:3px; cursor:pointer; transition:all .15s; }
-.start-btn:hover { background:var(--accent); transform:translateY(-1px); }
+.start-btn:hover { background:#1e3a8a; transform:translateY(-1px); }
 .lnote { margin-top:16px; font-family:var(--fh); font-size:11px; letter-spacing:2px; color:var(--ink4); text-transform:uppercase; }
 .ldiv { width:100%; height:1px; background:var(--rule); margin:36px 0; }
 .wyg { display:flex; gap:28px; }
@@ -65,7 +66,7 @@ body { background:var(--bg); color:var(--ink); font-family:var(--fb); min-height
 .other-in.vis { display:block; }
 .qnav { display:flex; gap:10px; margin-top:26px; align-items:center; }
 .btnp { background:var(--blue); color:#fff; border:none; padding:13px 28px; font-family:var(--fh); font-size:16px; letter-spacing:2px; cursor:pointer; transition:all .15s; text-transform:uppercase; }
-.btnp:hover { background:var(--accent); }
+.btnp:hover { background:#1e3a8a; }
 .btns { background:transparent; border:1px solid var(--rule); color:var(--ink3); padding:13px 20px; font-family:var(--fh); font-size:13px; letter-spacing:2px; cursor:pointer; transition:all .15s; text-transform:uppercase; }
 .btns:hover { border-color:var(--ink3); color:var(--ink2); }
 .btnsk { margin-left:auto; background:none; border:none; color:var(--ink4); font-size:13px; cursor:pointer; font-family:var(--fh); letter-spacing:2px; text-transform:uppercase; }
@@ -88,7 +89,7 @@ body { background:var(--bg); color:var(--ink); font-family:var(--fb); min-height
 .progress-time { font-family:var(--fh); font-size:11px; letter-spacing:2px; color:var(--ink4); text-transform:uppercase; margin-top:8px; text-align:center; }
 
 /* RESULTS */
-.rband { background:var(--blue); padding:18px 32px; display:flex; align-items:center; gap:20px; flex-wrap:wrap; flex-shrink:0; }
+.rband { background:#0a0a0a; padding:18px 32px; display:flex; align-items:center; gap:20px; flex-wrap:wrap; flex-shrink:0; }
 .rdname { flex:1; font-family:var(--fh); font-size:20px; letter-spacing:1px; color:#fff; font-weight:500; }
 .rdmeta { font-size:13px; color:rgba(255,255,255,0.5); margin-top:2px; font-family:var(--fb); }
 .vbadge { padding:10px 22px; font-family:var(--fh); font-size:14px; letter-spacing:2px; text-transform:uppercase; border:2px solid; display:flex; flex-direction:column; align-items:center; gap:2px; }
@@ -150,7 +151,7 @@ body { background:var(--bg); color:var(--ink); font-family:var(--fb); min-height
 .pbtn { padding:8px 18px; font-family:var(--fh); font-size:12px; letter-spacing:2px; text-transform:uppercase; cursor:pointer; transition:all .12s; border:1px solid var(--rule); background:var(--surface); color:var(--ink2); }
 .pbtn:hover { border-color:var(--blue); color:var(--blue); }
 .pbtn.pri { background:var(--blue); border-color:var(--blue); color:#fff; }
-.pbtn.pri:hover { background:var(--accent); border-color:var(--accent); }
+.pbtn.pri:hover { background:#1e3a8a; border-color:#1e3a8a; }
 
 /* ERROR BOX */
 .err-box { background:#fff0ee; border:1px solid var(--red); border-left:4px solid var(--red); padding:16px 18px; margin-bottom:16px; font-family:var(--fs); font-size:14px; color:var(--red); line-height:1.6; }
@@ -182,7 +183,7 @@ body { background:var(--bg); color:var(--ink); font-family:var(--fb); min-height
 
 <!-- LANDING -->
 <div class="screen active" id="sl">
-  <div class="hdr"><div class="logo">DEAL<span>CHECK</span></div><div class="hdr-tag">AI-Powered Industrial Sales Coach</div></div>
+  <div class="hdr"><div class="logo">DEAL<span>CHECK</span></div><div class="hdr-brand">Presented by Sapper</div><div class="hdr-tag">AI-Powered Industrial Sales Coach</div></div>
 
   <div style="flex:1;display:flex;align-items:center;justify-content:center;padding:48px 20px;">
     <div class="li">
@@ -203,13 +204,13 @@ body { background:var(--bg); color:var(--ink); font-family:var(--fb); min-height
 
 <!-- QUESTIONS -->
 <div class="screen" id="sq">
-  <div class="hdr"><div class="logo">DEAL<span>CHECK</span></div><button class="hdr-btn" onclick="goTo('sl')">← EXIT</button></div>
+  <div class="hdr"><div class="logo">DEAL<span>CHECK</span></div><div class="hdr-brand">Presented by Sapper</div><button class="hdr-btn" onclick="goTo('sl')">← EXIT</button></div>
   <div class="qwrap"><div class="qcard" id="qcard"></div></div>
 </div>
 
 <!-- PROCESSING -->
 <div class="screen" id="sp">
-  <div class="hdr"><div class="logo">DEAL<span>CHECK</span></div><div class="hdr-tag">Analyzing</div></div>
+  <div class="hdr"><div class="logo">DEAL<span>CHECK</span></div><div class="hdr-brand">Presented by Sapper</div><div class="hdr-tag">Analyzing</div></div>
   <div style="flex:1;display:flex;align-items:center;justify-content:center;padding:40px 20px;">
     <div class="procbox">
       <div class="proctitle">Reading Your Deal</div>
@@ -232,7 +233,7 @@ body { background:var(--bg); color:var(--ink); font-family:var(--fb); min-height
 
 <!-- RESULTS -->
 <div class="screen" id="sr">
-  <div class="hdr"><div class="logo">DEAL<span>CHECK</span></div><div class="hdr-tag">Results</div></div>
+  <div class="hdr"><div class="logo">DEAL<span>CHECK</span></div><div class="hdr-brand">Presented by Sapper</div><div class="hdr-tag">Results</div></div>
   <div class="rband">
     <div><div class="rdname" id="rdname">—</div><div class="rdmeta" id="rdmeta">—</div></div>
     <div style="margin-left:auto;display:flex;align-items:center;gap:14px;">
