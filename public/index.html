@@ -20,8 +20,9 @@ body { background:var(--bg); color:var(--ink); font-family:var(--fb); min-height
 .hdr { background:#0a0a0a; padding:14px 32px; display:flex; align-items:center; justify-content:space-between; border-bottom:3px solid var(--blue); flex-shrink:0; }
 .logo { font-family:var(--fh); font-size:22px; letter-spacing:3px; color:#fff; font-weight:700; }
 .logo span { color:var(--blue); }
+.logo-brand { font-family:var(--fh); font-size:18px; letter-spacing:2px; color:#fff; font-weight:400; margin-left:16px; padding-left:16px; border-left:2px solid var(--blue); }
+.logo-brand span { color:var(--blue); font-weight:700; }
 .hdr-tag { font-family:var(--fh); font-size:11px; letter-spacing:3px; color:rgba(255,255,255,0.45); text-transform:uppercase; }
-.hdr-brand { font-family:var(--fh); font-size:12px; letter-spacing:2px; color:var(--blue); margin-left:16px; padding:4px 12px; border:1px solid var(--blue); text-transform:uppercase; }
 .hdr-btn { background:none; border:1px solid rgba(255,255,255,0.25); color:rgba(255,255,255,0.6); padding:8px 16px; font-family:var(--fh); font-size:12px; letter-spacing:2px; cursor:pointer; text-transform:uppercase; transition:all .15s; }
 .hdr-btn:hover { border-color:rgba(255,255,255,.6); color:#fff; }
 
@@ -187,7 +188,7 @@ body { background:var(--bg); color:var(--ink); font-family:var(--fb); min-height
 
 <!-- LANDING -->
 <div class="screen active" id="sl">
-  <div class="hdr"><div class="logo">DEAL<span>CHECK</span></div><div class="hdr-brand">Presented by Sapper</div><div class="hdr-tag">Manufacturing Sales Coach</div></div>
+  <div class="hdr"><div class="logo">DEAL<span>CHECK</span></div><div class="logo-brand">Powered by <span>SAPPER</span></div><div class="hdr-tag">Manufacturing Sales Coach</div></div>
 
   <div style="flex:1;display:flex;align-items:center;justify-content:center;padding:48px 20px;">
     <div class="li">
@@ -209,14 +210,14 @@ body { background:var(--bg); color:var(--ink); font-family:var(--fb); min-height
 
 <!-- QUESTIONS -->
 <div class="screen" id="sq">
-  <div class="hdr"><div class="logo">DEAL<span>CHECK</span></div><div class="hdr-brand">Presented by Sapper</div><button class="hdr-btn" onclick="goTo('sl')">← EXIT</button></div>
+  <div class="hdr"><div class="logo">DEAL<span>CHECK</span></div><div class="logo-brand">Powered by <span>SAPPER</span></div><button class="hdr-btn" onclick="goTo('sl')">← EXIT</button></div>
   <div class="qwrap"><div class="qcard" id="qcard"></div></div>
   <div class="footer"><div class="footer-brand"><span>Presented by</span> SAPPER</div></div>
 </div>
 
 <!-- PROCESSING -->
 <div class="screen" id="sp">
-  <div class="hdr"><div class="logo">DEAL<span>CHECK</span></div><div class="hdr-brand">Presented by Sapper</div><div class="hdr-tag">Analyzing</div></div>
+  <div class="hdr"><div class="logo">DEAL<span>CHECK</span></div><div class="logo-brand">Powered by <span>SAPPER</span></div><div class="hdr-tag">Analyzing</div></div>
   <div style="flex:1;display:flex;align-items:center;justify-content:center;padding:40px 20px;">
     <div class="procbox">
       <div class="proctitle">Reading Your Deal</div>
@@ -240,7 +241,7 @@ body { background:var(--bg); color:var(--ink); font-family:var(--fb); min-height
 
 <!-- RESULTS -->
 <div class="screen" id="sr">
-  <div class="hdr"><div class="logo">DEAL<span>CHECK</span></div><div class="hdr-brand">Presented by Sapper</div><div class="hdr-tag">Results</div></div>
+  <div class="hdr"><div class="logo">DEAL<span>CHECK</span></div><div class="logo-brand">Powered by <span>SAPPER</span></div><div class="hdr-tag">Results</div></div>
   <div class="rband">
     <div><div class="rdname" id="rdname">—</div><div class="rdmeta" id="rdmeta">—</div></div>
     <div style="margin-left:auto;display:flex;align-items:center;gap:14px;">
